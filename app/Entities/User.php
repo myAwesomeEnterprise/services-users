@@ -41,6 +41,15 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * The attributes that should be cast to date.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'banned_until',
+    ];
+
+    /**
      * Get the route key for the model.
      *
      * @return string

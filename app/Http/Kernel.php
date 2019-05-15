@@ -35,11 +35,13 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\CheckBanned::class,
         ],
 
         'api' => [
             'throttle:60,1',
             'bindings',
+            'check.banned',
         ],
     ];
 
@@ -73,10 +75,11 @@ class Kernel extends HttpKernel
         'userCanNot'             => \App\Http\Middleware\Ability\userCanNot::class,
 
         'isOwn'                  => \App\Http\Middleware\IsOwn::class,
+        'check.banned'           => \App\Http\Middleware\CheckBanned::class,
 
-        'todo.listBelongsToUser' => \App\Http\Middleware\Todo\ListBelongsToUser::class,
-        'todo.itemBelongsToList' => \App\Http\Middleware\Todo\ItemBelongsToList::class,
-        'todo.tagBelongsToUser'  => \App\Http\Middleware\Todo\TagBelongsToUser::class,
+        // 'todo.listBelongsToUser' => \App\Http\Middleware\Todo\ListBelongsToUser::class,
+        // 'todo.itemBelongsToList' => \App\Http\Middleware\Todo\ItemBelongsToList::class,
+        // 'todo.tagBelongsToUser'  => \App\Http\Middleware\Todo\TagBelongsToUser::class,
     ];
 
     /**
