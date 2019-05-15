@@ -14,4 +14,10 @@ Route::middleware('auth:api')
         Route::post('/{user}/activate', 'VerificationController@activate')
             ->middleware('userCan:activate-account');
 
+        Route::post('/{user}/ban', 'BanController@ban')
+            ->middleware('userCan:ban-account');
+
+        Route::post('/{user}/unban', 'BanController@unban')
+            ->middleware('userCan:unban-account');
+
     });
