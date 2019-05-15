@@ -9,7 +9,7 @@ use Laravel\Passport\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasRolesAndAbilities, Notifiable, Searchable;
 
