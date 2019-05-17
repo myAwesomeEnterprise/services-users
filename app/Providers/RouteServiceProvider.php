@@ -54,8 +54,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('web')
              ->namespace($this->namespace)
-             ->group(function() {
-                $this->requireRoutes('routes/web');
+             ->group(function () {
+                 $this->requireRoutes('routes/web');
              });
     }
 
@@ -71,8 +71,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
              ->middleware('api')
              ->namespace($this->namespace)
-             ->group(function() {
-                $this->requireRoutes('routes/api');
+             ->group(function () {
+                 $this->requireRoutes('routes/api');
              });
     }
 
@@ -86,7 +86,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         return collect(
             Finder::create()->in(base_path($path))->name('*.php')
-        )->each(function($file) {
+        )->each(function ($file) {
             require $file->getRealPath();
         });
     }

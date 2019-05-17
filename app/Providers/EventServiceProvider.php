@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\AccountBaned;
+use App\Events\AccountUnBan;
+use App\Listeners\Ban\SendEmailNotification as SendBanEmailNotification;
+use App\Listeners\UnBan\SendEmailNotification as SendUnBanEmailNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -17,6 +21,14 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        AccountBaned::class => [
+            SendBanEmailNotification::class,
+        ],
+
+        AccountUnBan::class => [
+            SendUnBanEmailNotification::class,
         ],
     ];
 
