@@ -1,0 +1,3 @@
+[submodule "laradockUsers"]
+	path = laradockUsers
+	url = https://github.com/Laradock/laradock.git

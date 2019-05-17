@@ -3,8 +3,7 @@
 Route::middleware('auth:api')
     ->namespace('User')
     ->prefix('admin/users')
-    ->group(function() {
-
+    ->group(function () {
         Route::post('/{user}/send-verification-email', 'VerificationController@sendEmail')
             ->middleware('userCan:send-verification-email');
 
@@ -19,5 +18,4 @@ Route::middleware('auth:api')
 
         Route::post('/{user}/unban', 'BanController@unban')
             ->middleware('userCan:unban-account');
-
     });

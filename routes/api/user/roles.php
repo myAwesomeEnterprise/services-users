@@ -3,36 +3,30 @@
 Route::prefix('admin')
     ->namespace('User')
     ->middleware('auth:api')
-    ->group(function() {
+    ->group(function () {
+        Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function () {
+            Route::get('/user/{user}', 'AbilityController@get');
 
-    Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function() {
+            Route::post('/', 'AbilityController@store');
 
-        Route::get('/user/{user}', 'AbilityController@get');
+            Route::post('/to', 'AbilityController@user');
+            Route::post('/model', 'AbilityController@model');
+            Route::post('/entity', 'AbilityController@entity');
+            Route::post('/everything', 'AbilityController@everything');
 
-        Route::post('/', 'AbilityController@store');
+            Route::post('/manage/model', 'AbilityController@manageModel');
+            Route::post('/manage/entity', 'AbilityController@manageEntity');
 
-        Route::post('/to', 'AbilityController@user');
-        Route::post('/model', 'AbilityController@model');
-        Route::post('/entity', 'AbilityController@entity');
-        Route::post('/everything', 'AbilityController@everything');
+            Route::post('/own/model', 'AbilityController@ownModel');
+            Route::post('/own/everything', 'AbilityController@ownEverything');
+        });
 
-        Route::post('/manage/model', 'AbilityController@manageModel');
-        Route::post('/manage/entity', 'AbilityController@manageEntity');
+        Route::prefix('role')->middleware('userCan:admin-roles')->group(function () {
+            Route::get('/user/{user}', 'RoleController@get');
 
-        Route::post('/own/model', 'AbilityController@ownModel');
-        Route::post('/own/everything', 'AbilityController@ownEverything');
+            Route::post('/', 'RoleController@store');
 
+            Route::post('/ability', 'RoleController@ability');
+            Route::post('/user', 'RoleController@user');
+        });
     });
-
-    Route::prefix('role')->middleware('userCan:admin-roles')->group(function() {
-
-        Route::get('/user/{user}', 'RoleController@get');
-
-        Route::post('/', 'RoleController@store');
-
-        Route::post('/ability', 'RoleController@ability');
-        Route::post('/user', 'RoleController@user');
-
-    });
-
-});
