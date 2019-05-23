@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "${APP_PORT}:80"
+    volumes:
+      - ./docker/nginx/sites:/etc/nginx/conf.d
+      - ./docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - .:/var/www/html
+    networks:
+      - tickets
+    environment:
+      - APP_ENV=${APP_ENV}
+
+networks:
+  tickets:
+    driver: "bridge"
