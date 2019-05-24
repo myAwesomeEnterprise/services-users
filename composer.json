@@ -16,6 +16,7 @@
         "laravel/scout": "^7.1",
         "laravel/tinker": "^1.0",
         "paragonie/random_compat": "^9.99",
+        "predis/predis": "^1.1",
         "ramsey/uuid": "^3.8",
         "silber/bouncer": "v1.0.0-rc.5"
     },
