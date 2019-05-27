@@ -15,7 +15,8 @@ use App\Http\Requests\Ability\OwnModelRequest;
 use App\Http\Requests\Ability\OwnEverythingRequest;
 use App\Http\Resources\Ability as AbilityResource;
 use Illuminate\Http\Request;
-use Silber\Bouncer\Bouncer;
+// use Silber\Bouncer\Bouncer;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class AbilityController extends Controller
 {

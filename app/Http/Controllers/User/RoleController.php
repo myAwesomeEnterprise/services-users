@@ -9,7 +9,7 @@ use App\Http\Requests\Role\AbilityRequest;
 use App\Http\Requests\Role\UserRequest;
 use App\Http\Resources\Role as RoleResource;
 use Illuminate\Http\Request;
-use Silber\Bouncer\Bouncer;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class RoleController extends Controller
 {
