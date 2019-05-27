@@ -17,7 +17,10 @@ class User extends JsonResource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'active' => !is_null($this->email_verified_at),
+            'ban' => (bool) $this->ban,
+            'banned_until' => $this->banned_until,
         ];
     }
 }
