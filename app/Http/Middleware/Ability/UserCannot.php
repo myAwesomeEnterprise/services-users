@@ -2,19 +2,21 @@
 
 namespace App\Http\Middleware\Ability;
 
-use Bouncer;
 use Closure;
+use Illuminate\Http\Request;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class UserCannot
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  string   $ability
      * @return mixed
      */
-    public function handle($request, Closure $next, $ability)
+    public function handle($request, Closure $next, string $ability)
     {
         $user = auth()->user();
 
@@ -22,8 +24,6 @@ class UserCannot
             return $next($request);
         }
 
-        return response([
-            "message" => "This action is unauthorized.",
-        ], 403);
+        return abort(403, "This action is unauthorized.");
     }
 }

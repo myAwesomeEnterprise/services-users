@@ -2,19 +2,21 @@
 
 namespace App\Http\Middleware\Role;
 
-use Bouncer;
 use Closure;
+use Illuminate\Http\Request;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class UserIsAll
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
+     * @param  array    $roles
      * @return mixed
      */
-    public function handle($request, Closure $next, $roles)
+    public function handle($request, Closure $next, array $roles)
     {
         $user = auth()->user();
         $isAll = call_user_func_array([Bouncer::is($user), 'all'], $roles);
@@ -23,8 +25,6 @@ class UserIsAll
             return $next($request);
         }
 
-        return response([
-            "message" => "This action is unauthorized.",
-        ], 403);
+        return abort(403, "This action is unauthorized.");
     }
 }

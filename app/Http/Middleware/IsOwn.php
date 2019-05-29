@@ -13,9 +13,10 @@ class IsOwn
      *
      * @param  Request  $request
      * @param  Closure  $next
+     * @param  string   $ability
      * @return mixed
      */
-    public function handle($request, Closure $next, $ability)
+    public function handle($request, Closure $next, string $ability)
     {
         $userRequested = $request->route('user');
         $user = auth()->user();
@@ -24,6 +25,6 @@ class IsOwn
             return $next($request);
         }
 
-        abort(403, "This action is unauthorized.");
+        return abort(403, "This action is unauthorized.");
     }
 }
