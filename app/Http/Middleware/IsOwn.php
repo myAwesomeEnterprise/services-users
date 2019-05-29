@@ -2,7 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Bouncer;
+use Illuminate\Http\Request;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 use Closure;
 
 class IsOwn
@@ -10,8 +11,8 @@ class IsOwn
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next, $ability)
@@ -23,8 +24,6 @@ class IsOwn
             return $next($request);
         }
 
-        return response([
-            "message" => "This action is unauthorized.",
-        ], 403);
+        abort(403, "This action is unauthorized.");
     }
 }

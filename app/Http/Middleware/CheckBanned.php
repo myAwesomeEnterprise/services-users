@@ -3,14 +3,15 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class CheckBanned
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -25,7 +26,7 @@ class CheckBanned
             }
 
             if ($request->wantsJson()) {
-                return response()->json(compact('message'), 403);
+                abort(403, $message);
             } else {
                 return redirect()->route('login')->withMessage($message);
             }
