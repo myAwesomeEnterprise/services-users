@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Silber\Bouncer\BouncerFacade as Bouncer;
 use Closure;
 
-class IsOwn
+class IsOwns
 {
     /**
      * Handle an incoming request.

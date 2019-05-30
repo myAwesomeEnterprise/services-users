@@ -74,7 +74,7 @@ class Kernel extends HttpKernel
         'userCan'                => \App\Http\Middleware\Ability\UserCan::class,
         'userCanNot'             => \App\Http\Middleware\Ability\userCanNot::class,
 
-        'isOwn'                  => \App\Http\Middleware\IsOwn::class,
+        'isOwns'                  => \App\Http\Middleware\IsOwns::class,
         'check.banned'           => \App\Http\Middleware\CheckBanned::class,
 
         // 'todo.listBelongsToUser' => \App\Http\Middleware\Todo\ListBelongsToUser::class,
