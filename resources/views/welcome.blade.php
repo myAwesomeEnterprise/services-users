@@ -85,7 +85,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Lyn
+                    Users
                 </div>
 
                 <div class="brands">
