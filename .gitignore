@@ -3,9 +3,9 @@
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
-/.vagrant
+.idea
+.vscode
+.vagrant
 .env
 .phpunit.result.cache
 Homestead.json

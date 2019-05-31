@@ -24,7 +24,6 @@ class ConfirmedPassword implements Rule
         $this->table = $table;
         $this->id_column = $id_column;
         $this->password_column = $password_column;
-
     }
 
     /**
