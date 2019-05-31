@@ -1,5 +1,7 @@
 <?php
 
+use STS\Fixer\FixerServiceProvider;
+
 return [
 
     /*
@@ -174,6 +176,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        // https://github.com/stechstudio/Laravel-PHP-CS-Fixer
+        STS\Fixer\FixerServiceProvider::class,
 
     ],
 
