@@ -66,6 +66,20 @@ return [
             'block_for' => null,
         ],
 
+        'interop' => [
+            'driver' => 'amqp_interop',
+            'connection_factory_class' => \Enqueue\AmqpLib\AmqpConnectionFactory::class,
+            'host' => env('RABBITMQ_HOST', 'localhost'),
+            'port' => env('RABBITMQ_PORT', 5672),
+            'user' => env('RABBITMQ_USER', 'guest'),
+            'pass' => env('RABBITMQ_PASSWORD', 'guest'),
+            'vhost' => env('RABBITMQ_VHOST', 'events'),
+            'logging' => [
+                'enabled' => false,
+                'level' => 'info',
+            ],
+        ],
+
     ],
 
     /*

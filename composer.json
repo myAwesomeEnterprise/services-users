@@ -15,6 +15,7 @@
         "laravel/passport": "^7.2",
         "laravel/scout": "^7.1",
         "laravel/tinker": "^1.0",
+        "nuwber/rabbitevents": "^1.4",
         "paragonie/random_compat": "^9.99",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.8",

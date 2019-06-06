@@ -37,6 +37,7 @@ class BanController extends Controller
         $this->userRepository->ban($user, $days);
 
         event(new AccountBaned($user));
+        fire('rabbit', ['days' => $days]);
 
         return response()->json([
             "message" => "The account has been banned"
