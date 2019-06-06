@@ -179,6 +179,9 @@ return [
 
         // https://github.com/stechstudio/Laravel-PHP-CS-Fixer
         STS\Fixer\FixerServiceProvider::class,
+        // https://nuwber.github.io/rabbitevents/
+        Nuwber\Events\BroadcastEventServiceProvider::class,
+        Enqueue\LaravelQueue\EnqueueServiceProvider::class,
 
     ],
 

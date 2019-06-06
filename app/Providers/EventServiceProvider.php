@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\AccountBaned;
 use App\Events\AccountUnBan;
+use App\Events\RabbitMq;
 use App\Listeners\Ban\SendEmailNotification as SendBanEmailNotification;
 use App\Listeners\UnBan\SendEmailNotification as SendUnBanEmailNotification;
 use Illuminate\Support\Facades\Event;
@@ -30,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
         AccountUnBan::class => [
             SendUnBanEmailNotification::class,
         ],
+
+        'rabbit' => [
+            'App\Listeners\RabbitNotification',
+        ]
     ];
 
     /**

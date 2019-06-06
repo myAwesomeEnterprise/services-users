@@ -20,6 +20,7 @@ class BanController extends Controller
         $user->save();
 
         event(new AccountBaned($user));
+        fire('rabbit', ['days' => $days]);
 
         return response()->json([
             "message" => "The account has been banned"
