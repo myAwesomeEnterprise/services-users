@@ -6,18 +6,35 @@ use App\Entities\User;
 use App\Events\AccountBaned;
 use App\Events\AccountUnBan;
 use App\Http\Requests\User\BanRequest;
-use Illuminate\Http\Request;
+use App\Repositories\UserRepository;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 
 class BanController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+
+    /**
+     * BanController constructor.
+     */
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
+    /**
+     * @param BanRequest $request
+     * @param User $user
+     * @return JsonResponse
+     */
     public function ban(BanRequest $request, User $user)
     {
         $days = $request->get('days');
 
-        $user->ban = true;
-        $user->banned_until = $days > 0 ? now()->addDays($days) : null;
-        $user->save();
+        $this->userRepository->ban($user, $days);
 
         event(new AccountBaned($user));
 
@@ -26,11 +43,13 @@ class BanController extends Controller
         ], 200);
     }
 
-    public function unban(User $user)
+    /**
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function unBan(User $user)
     {
-        $user->ban = false;
-        $user->banned_until = null;
-        $user->save();
+        $this->userRepository->unBan($user);
 
         event(new AccountUnBan($user));
 

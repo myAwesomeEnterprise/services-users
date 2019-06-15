@@ -16,6 +16,6 @@ Route::middleware('auth:api')
         Route::post('/{user}/ban', 'BanController@ban')
             ->middleware('userCan:ban-account');
 
-        Route::post('/{user}/unban', 'BanController@unban')
+        Route::post('/{user}/unban', 'BanController@unBan')
             ->middleware('userCan:unban-account');
     });
