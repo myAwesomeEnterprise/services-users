@@ -4,12 +4,14 @@ namespace App\Listeners\Ban;
 
 use App\Events\AccountBaned;
 use App\Mail\User\BanAccount;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
 
 class SendEmailNotification implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * The time (seconds) before the job should be processed.
      *
@@ -18,13 +20,18 @@ class SendEmailNotification implements ShouldQueue
     public $delay = 30;
 
     /**
+     * @var Mailer
+     */
+    private $mailer;
+
+    /**
      * Create the event listener.
      *
-     * @return void
+     * @param Mailer $mailer
      */
-    public function __construct()
+    public function __construct(Mailer $mailer)
     {
-        //
+        $this->mailer = $mailer;
     }
 
     /**
@@ -37,7 +44,8 @@ class SendEmailNotification implements ShouldQueue
     {
         $user = $event->user;
 
-        Mail::to($user->email)->send(new BanAccount($user));
+        $this->mailer->to($user->email)
+            ->send(new BanAccount($user));
     }
 
     /**
