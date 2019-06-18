@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Entities\User;
-use App\Events\AccountBaned;
-use App\Events\AccountUnBan;
 use App\Http\Requests\User\BanRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -36,8 +34,7 @@ class BanController extends Controller
 
         $this->userRepository->ban($user, $days);
 
-        event(new AccountBaned($user));
-        fire('rabbit.echo', [['days' => $days]]);
+        fire('users.ban', [['user_id' => $user->id]]);
 
         return response()->json([
             "message" => "The account has been banned"
@@ -52,7 +49,7 @@ class BanController extends Controller
     {
         $this->userRepository->unBan($user);
 
-        event(new AccountUnBan($user));
+        fire('users.un.ban', [['user_id' => $user->id]]);
 
         return response()->json([
             "message" => "The account has been unbanned"
