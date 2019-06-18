@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Nuwber\Events\BroadcastEventServiceProvider;
-
 
 class RabbitEventServiceProvider extends BroadcastEventServiceProvider
 {
@@ -16,6 +14,14 @@ class RabbitEventServiceProvider extends BroadcastEventServiceProvider
     protected $listen = [
         'rabbit.echo' => [
             'App\Listeners\RabbitNotification',
+        ],
+
+        'users.ban' => [
+            'App\Listeners\Ban\SendEmailNotification',
+        ],
+
+        'users.un.ban' => [
+            'App\Listeners\UnBan\SendEmailNotification',
         ],
     ];
 }
