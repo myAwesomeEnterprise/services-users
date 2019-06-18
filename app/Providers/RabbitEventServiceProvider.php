@@ -16,6 +16,10 @@ class RabbitEventServiceProvider extends BroadcastEventServiceProvider
             'App\Listeners\RabbitNotification',
         ],
 
+        'users.registered' => [
+            'App\Listeners\Registered\SendEmailVerificationNotification',
+        ],
+
         'users.ban' => [
             'App\Listeners\Ban\SendEmailNotification',
         ],

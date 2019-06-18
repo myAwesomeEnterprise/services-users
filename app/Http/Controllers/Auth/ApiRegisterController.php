@@ -17,7 +17,9 @@ class ApiRegisterController extends RegisterController
     {
         $this->validator($request->all())->validate();
 
-        event(new Registered($user = $this->create($request->all())));
+        $user = $this->create($request->all());
+
+        fire('users.registered', [['user_id' => $user->id]]);
 
         $client = Client::where('password_client', 1)->first();
 
