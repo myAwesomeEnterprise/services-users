@@ -44,10 +44,9 @@ class RabbitEvents extends Command
         $events = $this->laravel->make('broadcast.events')->getEvents();
 
         foreach ($events as $event) {
-            $this->info("php /var/www/html/artisan rabbitevents:listen {$event} >> /dev/null 2>&1");
+            $this->info("php /var/www/html/artisan rabbitevents:listen {$event} > /dev/null &");
 
-            exec("php /var/www/html/artisan rabbitevents:listen {$event} >> /dev/null 2>&1");
-            // > /dev/null &
+            shell_exec("php /var/www/html/artisan rabbitevents:listen {$event} > /dev/null &");
 
             /*
             $this->call('rabbitevents:listen', [
