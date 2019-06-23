@@ -176,6 +176,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\PassportServiceProvider::class,
 
         // https://github.com/stechstudio/Laravel-PHP-CS-Fixer
         STS\Fixer\FixerServiceProvider::class,
