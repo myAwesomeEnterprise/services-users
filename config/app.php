@@ -183,6 +183,8 @@ return [
         // https://nuwber.github.io/rabbitevents/
         Enqueue\LaravelQueue\EnqueueServiceProvider::class,
         App\Providers\RabbitEventServiceProvider::class,
+        // https://github.com/JosephSilber/bouncer
+        Silber\Bouncer\BouncerServiceProvider::class,
 
     ],
 
@@ -235,6 +237,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        // https://github.com/JosephSilber/bouncer
+        'Bouncer' => Silber\Bouncer\BouncerFacade::class,
     ],
 
 ];
