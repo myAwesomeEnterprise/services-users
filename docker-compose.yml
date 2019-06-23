@@ -20,7 +20,7 @@ services:
     build: docker/php
     container_name: usersPhp
     ports:
-      - "9001:9001" # http://127.0.0.1:9001 - supervisor web
+      - "${SUPERVISOR_PORT}:9001" # http://127.0.0.1:9001 - supervisor web
     volumes:
       - .:/var/www/html
       - ./supervisor/supervisord.conf:/etc/supervisord.conf
