@@ -6,6 +6,7 @@ use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\StoreRequest;
 use App\Http\Requests\Role\AbilityRequest;
+use App\Http\Requests\Role\UpdateRequest;
 use App\Http\Requests\Role\UserRequest;
 use App\Http\Resources\Role as RoleResource;
 use Silber\Bouncer\BouncerFacade as Bouncer;
@@ -25,20 +26,32 @@ class RoleController extends Controller
         return new RoleResource($role);
     }
 
-    /*
-    public function get(User $user)
-    {
-        $roles = $user->roles;
-
-        return RoleResource::collection($roles);
-    }
-    */
-
     public function store(StoreRequest $request)
     {
         $role = Bouncer::role()->firstOrCreate($request->only('name', 'title'));
 
-        return new RoleResource($role, 201);
+        return new RoleResource($role);
+    }
+
+    public function update(Role $role, UpdateRequest $request)
+    {
+        $role->update($request->all());
+
+        return new RoleResource($role);
+    }
+
+    public function destroy(Role $role)
+    {
+        $role->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function getByUser(User $user)
+    {
+        $roles = $user->roles;
+
+        return RoleResource::collection($roles);
     }
 
     public function ability(AbilityRequest $request)
