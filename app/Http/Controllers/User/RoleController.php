@@ -8,17 +8,31 @@ use App\Http\Requests\Role\StoreRequest;
 use App\Http\Requests\Role\AbilityRequest;
 use App\Http\Requests\Role\UserRequest;
 use App\Http\Resources\Role as RoleResource;
-use Illuminate\Http\Request;
 use Silber\Bouncer\BouncerFacade as Bouncer;
+use Silber\Bouncer\Database\Role;
 
 class RoleController extends Controller
 {
+    public function all()
+    {
+        $roles = Role::paginate();
+
+        return RoleResource::collection($roles);
+    }
+
+    public function get(Role $role)
+    {
+        return new RoleResource($role);
+    }
+
+    /*
     public function get(User $user)
     {
         $roles = $user->roles;
 
         return RoleResource::collection($roles);
     }
+    */
 
     public function store(StoreRequest $request)
     {

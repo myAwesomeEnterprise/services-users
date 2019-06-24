@@ -21,6 +21,11 @@ Route::prefix('admin')
             Route::post('/own/everything', 'AbilityController@ownEverything');
         });
 
+        Route::prefix('roles')->middleware('userCan:admin-roles')->group(function () {
+            Route::get('/', 'RoleController@all');
+            Route::get('/{role}', 'RoleController@get');
+        });
+
         Route::prefix('role')->middleware('userCan:admin-roles')->group(function () {
             Route::get('/user/{user}', 'RoleController@get');
 
