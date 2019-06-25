@@ -9,6 +9,7 @@ use App\Http\Requests\Role\AbilityRequest;
 use App\Http\Requests\Role\UpdateRequest;
 use App\Http\Requests\Role\UserRequest;
 use App\Http\Resources\Role as RoleResource;
+use App\Http\Resources\User as UserResource;
 use Silber\Bouncer\BouncerFacade as Bouncer;
 use Silber\Bouncer\Database\Role;
 
@@ -47,25 +48,25 @@ class RoleController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getByUser(User $user)
+    public function ability(Role $role, AbilityRequest $request)
+    {
+        if ($request->allow) {
+            Bouncer::allow($role)->to($request->ability);
+        } else {
+            Bouncer::disallow($role)->to($request->ability);
+        }
+
+        return response()->json(null, 204);
+    }
+
+    public function getRolesOfUser(User $user)
     {
         $roles = $user->roles;
 
         return RoleResource::collection($roles);
     }
 
-    public function ability(AbilityRequest $request)
-    {
-        if ($request->allow) {
-            Bouncer::allow($request->role)->to($request->ability);
-        } else {
-            Bouncer::disallow($request->role)->to($request->ability);
-        }
-
-        return response()->json(null, 204);
-    }
-
-    public function user(UserRequest $request)
+    public function assignUser(UserRequest $request)
     {
         $user = User::where('uuid', $request->user)->first();
 
@@ -76,5 +77,12 @@ class RoleController extends Controller
         }
 
         return response()->json(null, 204);
+    }
+
+    public function users(Role $role)
+    {
+        $users = $role->users()->paginate();
+
+        return UserResource::collection($users);
     }
 }

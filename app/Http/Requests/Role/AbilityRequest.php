@@ -24,7 +24,6 @@ class AbilityRequest extends FormRequest
     public function rules()
     {
         return [
-            'role'    => 'required|exists:roles,name',
             'ability' => 'required|exists:abilities,name',
             'allow'   => 'required|boolean',
         ];

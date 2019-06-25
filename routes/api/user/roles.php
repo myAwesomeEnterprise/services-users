@@ -22,14 +22,15 @@ Route::prefix('admin')
         });
 
         Route::prefix('roles')->middleware('userCan:admin-roles')->group(function () {
-            Route::post('/ability', 'RoleController@ability');
-            Route::get('/user/{user}', 'RoleController@getByUser');
-            Route::post('/user', 'RoleController@user');
+            Route::post('/user', 'RoleController@assignUser');
+            Route::get('/user/{user}', 'RoleController@getRolesOfUser');
 
             Route::get('/', 'RoleController@all');
             Route::post('/', 'RoleController@store');
             Route::get('/{role}', 'RoleController@get');
             Route::put('/{role}', 'RoleController@update');
             Route::delete('/{role}', 'RoleController@destroy');
+            Route::post('/{role}/ability', 'RoleController@ability');
+            Route::get('/{role}/users', 'RoleController@users');
         });
     });
