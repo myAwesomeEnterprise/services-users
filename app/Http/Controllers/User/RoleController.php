@@ -49,7 +49,7 @@ class RoleController extends Controller
         return response()->json(null, 204);
     }
 
-    public function ability(Role $role, AbilityRequest $request)
+    public function allowAbility(Role $role, AbilityRequest $request)
     {
         if ($request->allow) {
             Bouncer::allow($role)->to($request->ability);

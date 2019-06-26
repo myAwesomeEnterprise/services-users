@@ -4,7 +4,7 @@ namespace App\Http\Requests\Ability;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class UserForbidRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,6 @@ class UserRequest extends FormRequest
     {
         return [
             'user'    => 'required|exists:users,uuid',
-            'ability' => 'required|exists:abilities,name',
-            'allow'   => 'required|boolean',
             'forbid'  => 'required|boolean',
         ];
     }

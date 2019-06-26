@@ -14,10 +14,12 @@ Route::prefix('admin')
             Route::delete('/{ability}', 'AbilityController@destroy');
             Route::get('/{ability}/roles', 'AbilityController@roles');
             Route::get('/{ability}/users', 'AbilityController@users');
+
+            Route::post('/{ability}/user/allow', 'AbilityController@allowUser');
+            Route::post('/{ability}/user/forbid', 'AbilityController@forbidUser');
         });
 
         Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function () {
-            Route::post('/to', 'AbilityController@user');
             Route::post('/model', 'AbilityController@model');
             Route::post('/entity', 'AbilityController@entity');
             Route::post('/everything', 'AbilityController@everything');
@@ -38,8 +40,9 @@ Route::prefix('admin')
             Route::get('/{role}', 'RoleController@get');
             Route::put('/{role}', 'RoleController@update');
             Route::delete('/{role}', 'RoleController@destroy');
-            Route::post('/{role}/ability', 'RoleController@ability');
             Route::get('/{role}/abilities', 'RoleController@abilities');
             Route::get('/{role}/users', 'RoleController@users');
+
+            Route::post('/{role}/ability', 'RoleController@allowAbility');
         });
     });

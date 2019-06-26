@@ -6,7 +6,7 @@ use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ability\StoreRequest;
 use App\Http\Requests\Ability\UpdateRequest;
-use App\Http\Requests\Ability\UserRequest;
+use App\Http\Requests\Ability\UserAllowRequest;
 use App\Http\Requests\Ability\ModelRequest;
 use App\Http\Requests\Ability\EntityRequest;
 use App\Http\Requests\Ability\EverythingRequest;
@@ -14,6 +14,7 @@ use App\Http\Requests\Ability\ManageModelRequest;
 use App\Http\Requests\Ability\ManageEntityRequest;
 use App\Http\Requests\Ability\OwnModelRequest;
 use App\Http\Requests\Ability\OwnEverythingRequest;
+use App\Http\Requests\Ability\UserForbidRequest;
 use App\Http\Resources\Ability as AbilityResource;
 use App\Http\Resources\Role as RoleResource;
 use App\Http\Resources\User as UserResource;
@@ -76,20 +77,27 @@ class AbilityController extends Controller
         return AbilityResource::collection($abilities);
     }
 
-    public function user(UserRequest $request)
+    public function allowUser(Ability $ability, UserAllowRequest $request)
     {
         $user = User::uuid($request->user)->first();
 
         if ($request->allow) {
-            $user->allow($request->ability);
+            $user->allow($ability);
         } else {
-            $user->disallow($request->ability);
+            $user->disallow($ability);
         }
 
+        return response()->json(null, 204);
+    }
+
+    public function forbidUser(Ability $ability, UserForbidRequest $request)
+    {
+        $user = User::uuid($request->user)->first();
+
         if ($request->forbid) {
-            Bouncer::forbid($user)->to($request->ability);
+            Bouncer::forbid($user)->to($ability);
         } else {
-            Bouncer::unforbid($user)->to($request->ability);
+            Bouncer::unforbid($user)->to($ability);
         }
 
         return response()->json(null, 204);
