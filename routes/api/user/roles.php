@@ -4,11 +4,19 @@ Route::prefix('admin')
     ->namespace('User')
     ->middleware('auth:api')
     ->group(function () {
-        Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function () {
-            Route::get('/user/{user}', 'AbilityController@get');
+        Route::prefix('abilities')->middleware('userCan:admin-abilities')->group(function () {
+            Route::get('/user/{user}', 'AbilityController@getAbilitiesOfUser');
 
+            Route::get('/', 'AbilityController@all');
             Route::post('/', 'AbilityController@store');
+            Route::get('/{ability}', 'AbilityController@get');
+            Route::put('/{ability}', 'AbilityController@update');
+            Route::delete('/{ability}', 'AbilityController@destroy');
+            Route::get('/{ability}/roles', 'AbilityController@roles');
+            Route::get('/{ability}/users', 'AbilityController@users');
+        });
 
+        Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function () {
             Route::post('/to', 'AbilityController@user');
             Route::post('/model', 'AbilityController@model');
             Route::post('/entity', 'AbilityController@entity');
@@ -31,6 +39,7 @@ Route::prefix('admin')
             Route::put('/{role}', 'RoleController@update');
             Route::delete('/{role}', 'RoleController@destroy');
             Route::post('/{role}/ability', 'RoleController@ability');
+            Route::get('/{role}/abilities', 'RoleController@abilities');
             Route::get('/{role}/users', 'RoleController@users');
         });
     });
