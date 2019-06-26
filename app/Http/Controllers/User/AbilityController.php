@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ability\StoreRequest;
+use App\Http\Requests\Ability\UpdateRequest;
 use App\Http\Requests\Ability\UserRequest;
 use App\Http\Requests\Ability\ModelRequest;
 use App\Http\Requests\Ability\EntityRequest;
@@ -14,15 +15,16 @@ use App\Http\Requests\Ability\ManageEntityRequest;
 use App\Http\Requests\Ability\OwnModelRequest;
 use App\Http\Requests\Ability\OwnEverythingRequest;
 use App\Http\Resources\Ability as AbilityResource;
-use Illuminate\Http\Request;
-// use Silber\Bouncer\Bouncer;
+use App\Http\Resources\Role as RoleResource;
+use App\Http\Resources\User as UserResource;
 use Silber\Bouncer\BouncerFacade as Bouncer;
+use Silber\Bouncer\Database\Ability;
 
 class AbilityController extends Controller
 {
-    public function get(User $user)
+    public function all()
     {
-        $abilities = $user->getAbilities();
+        $abilities = Ability::paginate();
 
         return AbilityResource::collection($abilities);
     }
@@ -32,6 +34,46 @@ class AbilityController extends Controller
         $ability = Bouncer::ability()->firstOrCreate($request->only('name', 'title'));
 
         return new AbilityResource($ability, 201);
+    }
+
+    public function get(Ability $ability)
+    {
+        return new AbilityResource($ability);
+    }
+
+    public function update(Ability $ability, UpdateRequest $request)
+    {
+        $ability->update($request->all());
+
+        return new AbilityResource($ability);
+    }
+
+    public function destroy(Ability $ability)
+    {
+        $ability->delete();
+
+        return response()->json(null, 204);
+    }
+
+    public function roles(Ability $ability)
+    {
+        $roles = $ability->roles()->paginate();
+
+        return RoleResource::collection($roles);
+    }
+
+    public function users(Ability $ability)
+    {
+        $users = $ability->users()->paginate();
+
+        return UserResource::collection($users);
+    }
+
+    public function getAbilitiesOfUser(User $user)
+    {
+        $abilities = $user->getAbilities();
+
+        return AbilityResource::collection($abilities);
     }
 
     public function user(UserRequest $request)
