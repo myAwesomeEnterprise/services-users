@@ -19,6 +19,8 @@ Route::prefix('admin')
             Route::post('/{ability}/user/forbid', 'AbilityController@forbidUser');
         });
 
+        /*
+         * TODO: analizar si estas rutas tienen utilidad en microservicios
         Route::prefix('ability')->middleware('userCan:admin-abilities')->group(function () {
             Route::post('/model', 'AbilityController@model');
             Route::post('/entity', 'AbilityController@entity');
@@ -30,6 +32,7 @@ Route::prefix('admin')
             Route::post('/own/model', 'AbilityController@ownModel');
             Route::post('/own/everything', 'AbilityController@ownEverything');
         });
+        */
 
         Route::prefix('roles')->middleware('userCan:admin-roles')->group(function () {
             Route::post('/user', 'RoleController@assignUser');
