@@ -1,7 +1,5 @@
 <?php
 
-use STS\Fixer\FixerServiceProvider;
-
 return [
 
     /*
@@ -169,6 +167,13 @@ return [
         /*
          * Package Service Providers...
          */
+        // https://github.com/stechstudio/Laravel-PHP-CS-Fixer
+        STS\Fixer\FixerServiceProvider::class,
+        // https://nuwber.github.io/rabbitevents/
+        Enqueue\LaravelQueue\EnqueueServiceProvider::class,
+        App\Providers\RabbitEventServiceProvider::class,
+        // https://github.com/JosephSilber/bouncer
+        Silber\Bouncer\BouncerServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -179,14 +184,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\PassportServiceProvider::class,
-
-        // https://github.com/stechstudio/Laravel-PHP-CS-Fixer
-        STS\Fixer\FixerServiceProvider::class,
-        // https://nuwber.github.io/rabbitevents/
-        Enqueue\LaravelQueue\EnqueueServiceProvider::class,
-        App\Providers\RabbitEventServiceProvider::class,
-        // https://github.com/JosephSilber/bouncer
-        Silber\Bouncer\BouncerServiceProvider::class,
+        App\Providers\KongServiceProvider::class,
 
     ],
 

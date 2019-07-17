@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Resources\User as UserResource;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Laravel\Passport\Client;
 
 class ApiRegisterController extends RegisterController
 {
