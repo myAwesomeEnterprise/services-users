@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Passport::routes();
+        $apiPrefix = config('app.api_prefix');
+        Passport::routes(null, ["prefix" => "{$apiPrefix}/oauth"]);
     }
 }
