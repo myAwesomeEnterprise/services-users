@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Resources\User as UserResource;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
@@ -19,8 +20,21 @@ class ApiRegisterController extends RegisterController
 
         $user = $this->create($request->all());
 
-        fire('users.registered', [['user_id' => $user->id]]);
+        fire('users.registered', [['user_id' => $user]]);
 
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://kong:8001'
+        ]);
+        $response = $client->request('POST', '/consumers', [
+            'form_params' => [
+                'username' => $user->email,
+                'custom_id' => $user->uuid->toString(),
+            ]
+        ]);
+
+        return new UserResource($user);
+
+        /*
         $client = Client::where('password_client', 1)->first();
 
         $request->request->add([
@@ -38,5 +52,6 @@ class ApiRegisterController extends RegisterController
         );
 
         return \Route::dispatch($token);
+        */
     }
 }
