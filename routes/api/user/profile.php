@@ -1,7 +1,6 @@
 <?php
 
-Route::prefix('user/profile/{user}')
-    ->middleware('auth:api', 'isOwns:admin-profile')
+Route::prefix('/users/profile/{user}')
     ->namespace('User')
     ->group(function () {
         Route::get('/', 'ProfileController@get');
