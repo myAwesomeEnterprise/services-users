@@ -2,54 +2,26 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Entities\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ApiRegisterRequest;
 use App\Http\Resources\User as UserResource;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Ramsey\Uuid\Uuid;
 
-class ApiRegisterController extends RegisterController
+class ApiRegisterController extends Controller
 {
-    public function __construct()
+    public function register(ApiRegisterRequest $request)
     {
-        $this->middleware('guest');
-    }
-
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        $user = $this->create($request->all());
+        $user = User::create([
+            'uuid' => Uuid::uuid4(),
+            'name' =>$request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+        ]);
 
         fire('users.registered', [['user_id' => $user]]);
 
-        $client = new \GuzzleHttp\Client([
-            'base_uri' => 'http://kong:8001'
-        ]);
-        $response = $client->request('POST', '/consumers', [
-            'form_params' => [
-                'username' => $user->email,
-                'custom_id' => $user->uuid->toString(),
-            ]
-        ]);
-
         return new UserResource($user);
-
-        /*
-        $client = Client::where('password_client', 1)->first();
-
-        $request->request->add([
-            'grant_type'    => 'password',
-            'client_id'     => $client->id,
-            'client_secret' => $client->secret,
-            'username'      => $request->get('email'),
-            'password'      => $request->get('password'),
-            'scope'         => null,
-        ]);
-
-        $token = Request::create(
-            'oauth/token',
-            'POST'
-        );
-
-        return \Route::dispatch($token);
-        */
     }
 }
