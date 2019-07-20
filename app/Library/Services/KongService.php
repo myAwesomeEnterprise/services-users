@@ -21,14 +21,19 @@ class KongService implements KongInterface
         $headers = $this->getHeaderCollection(request()->headers);
         $config = collect(config('kong'));
 
-        $body = $config->only(['client_id', 'client_secret', 'grant_type', 'provision_key', 'scope']) ?? collect();
-        $body->put('authenticated_userid', $authenticatedUserId);
-
         return $this->client->request('POST', '/api/v1/users/oauth2/token', [
             'headers' => [
-                'Host' => $headers->get("x-forwarded-host")
+                'Accept' => 'application/json',
+                'Host' => $headers->get("host")
             ],
-            'form_params' => $body->toArray()
+            'form_params' => [
+                'client_id' => $config->get('client_id'),
+                'client_secret' => $config->get('client_secret'),
+                'grant_type' => $config->get('grant_type'),
+                'provision_key' => $config->get('provision_key'),
+                'authenticated_userid' => $authenticatedUserId,
+                'scope' => $config->get('scope'),
+            ],
         ]);
     }
 

@@ -17,9 +17,23 @@ class ApiLoginController extends Controller
 
         $user = User::where('email', $username)->first();
 
+        if (!$user->verified_at) {
+            dd('activatee');
+        }
+
+        if ($user->ban) {
+            dd('banned');
+        }
+
         if ($user && Hash::check($password, $user->password)) {
             $response = $kong->oauth2Token($user->uuid);
-            dd($response);
+
+            if ($response->getStatusCode() === 200) {
+                $body = json_decode($response->getBody()->getContents());
+                $body->uuid = $user->uuid;
+
+                return response()->json($body);
+            }
         }
 
         return response()->json([
