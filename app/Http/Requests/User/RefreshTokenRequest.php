@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Ability;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ManageModelRequest extends FormRequest
+class RefreshTokenRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,7 @@ class ManageModelRequest extends FormRequest
     public function rules()
     {
         return [
-            'user'   => 'required|exists:users,uuid',
-            'model'  => 'required',
-            'allow'  => 'required|boolean',
-            'forbid' => 'required|boolean',
+            'refresh_token' => 'required',
         ];
     }
 }

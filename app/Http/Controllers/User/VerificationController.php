@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Entities\User;
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 
 class VerificationController extends Controller
 {
@@ -20,12 +22,12 @@ class VerificationController extends Controller
 
     /**
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @param UserRepository $userRepo
+     * @return JsonResponse
      */
-    public function deactivate(User $user)
+    public function deactivate(User $user, UserRepository $userRepo)
     {
-        $user->email_verified_at = null;
-        $user->save();
+        $userRepo->unVerify($user);
 
         return response()->json([
             "message" => "The account has been deactivated"
@@ -34,12 +36,12 @@ class VerificationController extends Controller
 
     /**
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @param UserRepository $userRepo
+     * @return JsonResponse
      */
-    public function activate(User $user)
+    public function activate(User $user, UserRepository $userRepo)
     {
-        $user->email_verified_at = Carbon::now();
-        $user->save();
+        $userRepo->verify($user);
 
         return response()->json([
             "message" => "The account has been activated"
@@ -48,7 +50,7 @@ class VerificationController extends Controller
 
     /**
      * @param User $user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function sendEmail(User $user)
     {

@@ -65,21 +65,7 @@ class Kernel extends HttpKernel
 
         'cors'                   => \App\Http\Middleware\CORSMiddleware::class,
 
-        'userIsA'                => \App\Http\Middleware\Role\UserIsA::class,
-        'userIsAn'               => \App\Http\Middleware\Role\UserIsAn::class,
-        'userIsAll'              => \App\Http\Middleware\Role\UserIsAll::class,
-        'userIsNotA'             => \App\Http\Middleware\Role\UserIsNotA::class,
-        'userIsNotAn'            => \App\Http\Middleware\Role\UserIsNotAn::class,
-
-        'userCan'                => \App\Http\Middleware\Ability\UserCan::class,
-        'userCanNot'             => \App\Http\Middleware\Ability\userCanNot::class,
-
-        'isOwns'                  => \App\Http\Middleware\IsOwns::class,
         'check.banned'           => \App\Http\Middleware\CheckBanned::class,
-
-        // 'todo.listBelongsToUser' => \App\Http\Middleware\Todo\ListBelongsToUser::class,
-        // 'todo.itemBelongsToList' => \App\Http\Middleware\Todo\ItemBelongsToList::class,
-        // 'todo.tagBelongsToUser'  => \App\Http\Middleware\Todo\TagBelongsToUser::class,
     ];
 
     /**

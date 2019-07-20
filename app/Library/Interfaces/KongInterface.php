@@ -19,6 +19,12 @@ interface KongInterface
     public function oauth2Token(string $authenticatedUserId);
 
     /**
+     * @param string $refreshToken
+     * @return mixed
+     */
+    public function oauth2RefreshToken(string $refreshToken);
+
+    /**
      * @param string $username
      * @param string $custom_id
      * @param array $tags

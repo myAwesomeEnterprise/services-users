@@ -6,8 +6,7 @@ use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ProfileUpdateRequest;
 use App\Http\Requests\User\ProfileUpdatePasswordRequest;
-use App\Http\Resources\User as UserResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller

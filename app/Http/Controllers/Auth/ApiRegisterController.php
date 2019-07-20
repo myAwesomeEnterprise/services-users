@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ApiRegisterRequest;
-use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Uuid;
 

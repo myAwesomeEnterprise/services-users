@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Ability;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EntityRequest extends FormRequest
+class UserStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,9 @@ class EntityRequest extends FormRequest
     public function rules()
     {
         return [
-            'user'    => 'required|exists:users,uuid',
-            'ability' => 'required|exists:abilities,name',
-            'model'   => 'required',
-            'entity'  => 'required',
-            'allow'   => 'required|boolean',
-            'forbid'  => 'required|boolean',
+            'name' => 'required|max:255',
+            'email' => 'required|max:255|email|unique:users',
+            'password' => 'required|max:255|confirmed'
         ];
     }
 }

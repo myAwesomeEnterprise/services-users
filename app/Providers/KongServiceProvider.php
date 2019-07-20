@@ -33,20 +33,10 @@ class KongServiceProvider extends ServiceProvider
         $config = $this->app->config['kong'];
         $env = $this->app->config['app']['env'];
 
-        $scheme = $config['scheme'];
-        $host = $config['host'];
-        $port = $config['port'];
-        $timeout = $config['timeout'];
-
-        $options = [
-            'base_uri' => "{$scheme}://{$host}:{$port}",
-            'timeout' => $timeout,
-        ];
-
-        if ($env === 'local') {
-            $options['verify'] = false;
-        }
-
-        return new Client($options);
+        return new Client([
+            'base_uri' => $config['host'],
+            'timeout' => $config['timeout'],
+            'verify' => !($env === 'local'),
+        ]);
     }
 }

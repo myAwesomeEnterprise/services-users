@@ -2,13 +2,7 @@
 
 return [
 
-    'scheme' => env('KONG_SCHEME', 'http'),
-
     'host' => env('KONG_HOST', 'kong'),
-
-    'port' => env('KONG_PORT', 8001),
-
-    'ssl_port' => env('KONG_SSL_PORT', 8443),
 
     'timeout' => 2.0,
 
@@ -18,7 +12,10 @@ return [
 
     'provision_key' => env('KONG_PROVISION_KEY', null),
 
-    'grant_type' => env('KONG_GRANT_TYPE', 'password'),
+    'grant_type' => [
+        'authorize' => env('KONG_GRANT_TYPE_AUTHORIZE', 'password'),
+        'refresh_token' => env('KONG_GRANT_TYPE_REFRESH', 'refresh_token')
+    ],
 
     'scope' => env('KONG_SCOPE', 'read'),
 

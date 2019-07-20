@@ -29,9 +29,30 @@ class KongService implements KongInterface
             'form_params' => [
                 'client_id' => $config->get('client_id'),
                 'client_secret' => $config->get('client_secret'),
-                'grant_type' => $config->get('grant_type'),
+                'grant_type' => $config->get('grant_type')['authorize'],
                 'provision_key' => $config->get('provision_key'),
                 'authenticated_userid' => $authenticatedUserId,
+                'scope' => $config->get('scope'),
+            ],
+        ]);
+    }
+
+    public function oauth2RefreshToken(string $refreshToken)
+    {
+        $headers = $this->getHeaderCollection(request()->headers);
+        $config = collect(config('kong'));
+
+        return $this->client->request('POST', '/api/v1/users/oauth2/token', [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Host' => $headers->get("host")
+            ],
+            'form_params' => [
+                'client_id' => $config->get('client_id'),
+                'client_secret' => $config->get('client_secret'),
+                'grant_type' => $config->get('grant_type')['refresh_token'],
+                'provision_key' => $config->get('provision_key'),
+                'refresh_token' => $refreshToken,
                 'scope' => $config->get('scope'),
             ],
         ]);

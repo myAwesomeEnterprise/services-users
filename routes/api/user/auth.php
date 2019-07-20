@@ -5,8 +5,9 @@ Route::namespace('Auth')
     ->group(function () {
         Route::post('/register', 'ApiRegisterController@register');
         Route::post('/token', 'ApiLoginController@login');
-        Route::post('/logout', 'LogoutController@logout');
+        Route::post('/refresh-token', 'ApiRefreshController@refresh');
+        Route::post('/logout', 'LogoutController@logout');  // validate
         Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('/password/reset', 'ResetPasswordController@reset');
-        Route::post('/is-valid', 'CheckTokenController@check');
+        Route::post('/is-valid', 'CheckTokenController@check'); // validate
     });
