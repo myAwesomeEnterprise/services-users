@@ -24,7 +24,7 @@ class KongService implements KongInterface
         return $this->client->request('POST', '/api/v1/users/oauth2/token', [
             'headers' => [
                 'Accept' => 'application/json',
-                'Host' => $headers->get("host")
+                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
             ],
             'form_params' => [
                 'client_id' => $config->get('client_id'),
@@ -45,7 +45,7 @@ class KongService implements KongInterface
         return $this->client->request('POST', '/api/v1/users/oauth2/token', [
             'headers' => [
                 'Accept' => 'application/json',
-                'Host' => $headers->get("host")
+                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
             ],
             'form_params' => [
                 'client_id' => $config->get('client_id'),
