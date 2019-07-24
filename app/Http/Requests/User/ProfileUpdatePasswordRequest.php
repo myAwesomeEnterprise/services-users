@@ -25,7 +25,7 @@ class ProfileUpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'current_password' => ['required', new ConfirmedPassword(auth()->id())],
+            'current_password' => ['required', new ConfirmedPassword($this->route('user')->id)],
             'password'         => 'required|max:255|confirmed'
         ];
     }
