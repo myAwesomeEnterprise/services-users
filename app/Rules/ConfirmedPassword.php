@@ -16,7 +16,10 @@ class ConfirmedPassword implements Rule
     /**
      * Create a new rule instance.
      *
-     * @return void
+     * @param string $user_id
+     * @param string $table
+     * @param string $password_column
+     * @param string $id_column
      */
     public function __construct($user_id, $table = 'users', $password_column = 'password', $id_column = "id")
     {
