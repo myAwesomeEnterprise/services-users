@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\User;
 use App\Http\Requests\User\ApiLoginRequest;
 use App\Http\Controllers\Controller;
-use App\Library\Interfaces\KongInterface;
+use App\Library\Interfaces\Oauth2Interface;
 use App\Repositories\UserRepository;
 
 class ApiLoginController extends Controller
 {
-    public function login(ApiLoginRequest $request, KongInterface $kong, UserRepository $userRepo)
+    public function login(ApiLoginRequest $request, Oauth2Interface $oauth2, UserRepository $userRepo)
     {
         $username = $request->get('username');
         $password = $request->get('password');
@@ -35,7 +35,7 @@ class ApiLoginController extends Controller
             ], 403);
         }
 
-        $kongResponse = $kong->oauth2Token($user->uuid);
+        $kongResponse = $oauth2->token($user->uuid);
 
         if ($kongResponse->getStatusCode() === 200) {
             $body = json_decode($kongResponse->getBody()->getContents());

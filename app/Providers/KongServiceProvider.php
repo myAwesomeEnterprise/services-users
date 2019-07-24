@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Library\Interfaces\KongInterface;
+use App\Library\Interfaces\Oauth2Interface;
 use App\Library\Services\KongService;
 use \GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +23,7 @@ class KongServiceProvider extends ServiceProvider
 
     public function registerKong($client)
     {
-        $this->app->bind(KongInterface::class, function ($app) use ($client) {
+        $this->app->bind(Oauth2Interface::class, function ($app) use ($client) {
             return new KongService($client);
         });
     }

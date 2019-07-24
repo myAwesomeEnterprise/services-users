@@ -2,15 +2,19 @@
 
 namespace App\Library\Services;
 
-use App\Library\Interfaces\KongInterface;
+use App\Library\Interfaces\Oauth2Interface;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\HeaderBag;
 
-class KongService implements KongInterface
+class KongService implements Oauth2Interface
 {
     protected $client;
     protected $config;
+
+    private $tokenUri           = '/api/v1/users/oauth2/token';
+    private $refreshTokenUri    = '/api/v1/users/oauth2/token';
+    private $revoke             = '/oauth2_tokens';
 
     public function __construct(Client $client)
     {
@@ -18,74 +22,71 @@ class KongService implements KongInterface
         $this->config = $this->getConfig();
     }
 
-    public function getConfig()
+    public function token(string $authenticatedUserId)
+    {
+        $params = $this->getBody('authorize');
+        $params['authenticated_userid'] = $authenticatedUserId;
+
+        return $this->request('POST', $this->tokenUri, $params);
+    }
+
+    public function refreshToken(string $refreshToken)
+    {
+        $params = $this->getBody('refresh_token');
+        $params['refresh_token'] = $refreshToken;
+
+        return $this->request('POST', $this->refreshTokenUri, $params);
+    }
+
+    public function revoke()
+    {
+        $token = $this->getAuthorizationToken();
+
+        return $this->request('DELETE', "{$this->revoke}/{$token}");
+    }
+
+    private function getConfig()
     {
         return collect(config('kong'));
     }
 
-    public function oauth2Token(string $authenticatedUserId)
+    private function getHeaders()
     {
         $headers = $this->getHeaderCollection(request()->headers);
 
-        return $this->client->request('POST', '/api/v1/users/oauth2/token', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
-            ],
-            'form_params' => [
-                'client_id' => $this->config->get('client_id'),
-                'client_secret' => $this->config->get('client_secret'),
-                'grant_type' => $this->config->get('grant_type')['authorize'],
-                'provision_key' => $this->config->get('provision_key'),
-                'authenticated_userid' => $authenticatedUserId,
-                'scope' => $this->config->get('scope'),
-            ],
-        ]);
+        return [
+            'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
+            'Authorization' => $headers->get('authorization'),
+        ];
     }
 
-    public function oauth2RefreshToken(string $refreshToken)
+    private function getAuthorizationToken()
     {
         $headers = $this->getHeaderCollection(request()->headers);
 
-        return $this->client->request('POST', '/api/v1/users/oauth2/token', [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
-            ],
-            'form_params' => [
-                'client_id' => $this->config->get('client_id'),
-                'client_secret' => $this->config->get('client_secret'),
-                'grant_type' => $this->config->get('grant_type')['refresh_token'],
-                'provision_key' => $this->config->get('provision_key'),
-                'refresh_token' => $refreshToken,
-                'scope' => $this->config->get('scope'),
-            ],
-        ]);
+        return str_replace('Bearer ', '', $headers->get('authorization'));
     }
 
-    public function oauth2Revoke()
+    private function getBody(string $grantType): array
     {
-        $headers = $this->getHeaderCollection(request()->headers);
-        dd($headers);
-        $token = $headers->get('x-authenticated-userid');
+        return [
+            'provision_key' => $this->config->get('provision_key'),
+            'client_id' => $this->config->get('client_id'),
+            'client_secret' => $this->config->get('client_secret'),
+            'grant_type' => $this->config->get('grant_type')[$grantType],
+            'scope' => $this->config->get('scope'),
+        ];
+    }
 
-        return $this->client->request('DELETE', "/api/v1/users/oauth2_token/{$token}", [
-            'headers' => [
-                'Accept' => 'application/json',
-                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
-            ],
-            'form_params' => [
-                'client_id' => $this->config->get('client_id'),
-                'client_secret' => $this->config->get('client_secret'),
-                //'grant_type' => $this->config->get('grant_type')['authorize'],
-                'provision_key' => $this->config->get('provision_key'),
-                'authenticated_userid' => $headers->get('x-authenticated-userid'),
-                'scope' => $this->config->get('scope'),
-            ],
+    private function request(string $method, string $uri, array $params = [])
+    {
+        return $this->client->request($method, $uri, [
+            'headers' => $this->getHeaders(),
+            'form_params' => $params,
         ]);
     }
 
-    public function getHeaderCollection(HeaderBag $headers)
+    private function getHeaderCollection(HeaderBag $headers)
     {
         $headerNames = $headers->keys();
 

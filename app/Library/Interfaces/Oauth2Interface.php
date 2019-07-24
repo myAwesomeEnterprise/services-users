@@ -4,10 +4,10 @@ namespace App\Library\Interfaces;
 
 use GuzzleHttp\Client;
 
-interface KongInterface
+interface Oauth2Interface
 {
     /**
-     * KongInterface constructor.
+     * Oauth2Interface constructor.
      * @param Client $client
      */
     public function __construct(Client $client);
@@ -16,16 +16,16 @@ interface KongInterface
      * @param string $authenticatedUserId
      * @return mixed
      */
-    public function oauth2Token(string $authenticatedUserId);
+    public function token(string $authenticatedUserId);
 
     /**
      * @param string $refreshToken
      * @return mixed
      */
-    public function oauth2RefreshToken(string $refreshToken);
+    public function refreshToken(string $refreshToken);
 
     /**
      * @return mixed
      */
-    public function oauth2Revoke();
+    public function revoke();
 }

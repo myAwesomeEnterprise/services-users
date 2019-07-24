@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\User\RefreshTokenRequest;
-use App\Library\Interfaces\KongInterface;
 use App\Http\Controllers\Controller;
+use App\Library\Interfaces\Oauth2Interface;
 
 class ApiRefreshController extends Controller
 {
-    public function refresh(RefreshTokenRequest $request, KongInterface $kong)
+    public function refresh(RefreshTokenRequest $request, Oauth2Interface $oauth2)
     {
-        $response = $kong->oauth2RefreshToken($request->get('refresh_token'));
+        $response = $oauth2->refreshToken($request->get('refresh_token'));
 
         if ($response->getStatusCode() === 200) {
             $body = json_decode($response->getBody()->getContents());

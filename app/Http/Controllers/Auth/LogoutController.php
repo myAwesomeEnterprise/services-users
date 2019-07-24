@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Library\Interfaces\KongInterface;
-use Illuminate\Http\Request;
+use App\Library\Interfaces\Oauth2Interface;
 
 class LogoutController extends Controller
 {
-    public function logout(KongInterface $kong)
+    public function logout(Oauth2Interface $oauth2)
     {
-        $kong->oauth2Revoke();
+        $oauth2->revoke();
 
         return response()->json([
             'message' => 'You are Logged out.',
