@@ -10,16 +10,22 @@ use Symfony\Component\HttpFoundation\HeaderBag;
 class KongService implements KongInterface
 {
     protected $client;
+    protected $config;
 
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->config = $this->getConfig();
+    }
+
+    public function getConfig()
+    {
+        return collect(config('kong'));
     }
 
     public function oauth2Token(string $authenticatedUserId)
     {
         $headers = $this->getHeaderCollection(request()->headers);
-        $config = collect(config('kong'));
 
         return $this->client->request('POST', '/api/v1/users/oauth2/token', [
             'headers' => [
@@ -27,12 +33,12 @@ class KongService implements KongInterface
                 'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
             ],
             'form_params' => [
-                'client_id' => $config->get('client_id'),
-                'client_secret' => $config->get('client_secret'),
-                'grant_type' => $config->get('grant_type')['authorize'],
-                'provision_key' => $config->get('provision_key'),
+                'client_id' => $this->config->get('client_id'),
+                'client_secret' => $this->config->get('client_secret'),
+                'grant_type' => $this->config->get('grant_type')['authorize'],
+                'provision_key' => $this->config->get('provision_key'),
                 'authenticated_userid' => $authenticatedUserId,
-                'scope' => $config->get('scope'),
+                'scope' => $this->config->get('scope'),
             ],
         ]);
     }
@@ -40,7 +46,6 @@ class KongService implements KongInterface
     public function oauth2RefreshToken(string $refreshToken)
     {
         $headers = $this->getHeaderCollection(request()->headers);
-        $config = collect(config('kong'));
 
         return $this->client->request('POST', '/api/v1/users/oauth2/token', [
             'headers' => [
@@ -48,25 +53,35 @@ class KongService implements KongInterface
                 'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
             ],
             'form_params' => [
-                'client_id' => $config->get('client_id'),
-                'client_secret' => $config->get('client_secret'),
-                'grant_type' => $config->get('grant_type')['refresh_token'],
-                'provision_key' => $config->get('provision_key'),
+                'client_id' => $this->config->get('client_id'),
+                'client_secret' => $this->config->get('client_secret'),
+                'grant_type' => $this->config->get('grant_type')['refresh_token'],
+                'provision_key' => $this->config->get('provision_key'),
                 'refresh_token' => $refreshToken,
-                'scope' => $config->get('scope'),
+                'scope' => $this->config->get('scope'),
             ],
         ]);
     }
 
-    public function createConsumer(string $username, string $custom_id, array $tags = [])
+    public function oauth2Revoke()
     {
-        return $this->client->request('POST', '/consumers', [
-            'form_params' => [
-                'username' => $username,
-                'custom_id' => $custom_id,
-                'tags' => $tags,
+        $headers = $this->getHeaderCollection(request()->headers);
+        dd($headers);
+        $token = $headers->get('x-authenticated-userid');
+
+        return $this->client->request('DELETE', "/api/v1/users/oauth2_token/{$token}", [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Host' => $headers->get("x-forwarded-host") ?? $headers->get("host"),
             ],
-            'debug' => true,
+            'form_params' => [
+                'client_id' => $this->config->get('client_id'),
+                'client_secret' => $this->config->get('client_secret'),
+                //'grant_type' => $this->config->get('grant_type')['authorize'],
+                'provision_key' => $this->config->get('provision_key'),
+                'authenticated_userid' => $headers->get('x-authenticated-userid'),
+                'scope' => $this->config->get('scope'),
+            ],
         ]);
     }
 

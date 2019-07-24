@@ -25,10 +25,7 @@ interface KongInterface
     public function oauth2RefreshToken(string $refreshToken);
 
     /**
-     * @param string $username
-     * @param string $custom_id
-     * @param array $tags
      * @return mixed
      */
-    public function createConsumer(string $username, string $custom_id, array $tags = []);
+    public function oauth2Revoke();
 }

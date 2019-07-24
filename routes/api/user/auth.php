@@ -6,8 +6,7 @@ Route::namespace('Auth')
         Route::post('/register', 'ApiRegisterController@register');
         Route::post('/token', 'ApiLoginController@login');
         Route::post('/refresh-token', 'ApiRefreshController@refresh');
-        Route::post('/logout', 'LogoutController@logout');  // validate
+        Route::post('/logout', 'LogoutController@logout');
         Route::post('/password/email', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('/password/reset', 'ResetPasswordController@reset');
-        Route::post('/is-valid', 'CheckTokenController@check'); // validate
     });
